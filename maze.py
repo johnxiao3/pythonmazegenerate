@@ -10,12 +10,14 @@ import pygame
 import time
 import random
 import os
+from PIL import Image
+from pypdf import PdfMerger
 
 # setup maze variables
-TOT_MAZES = 2
+TOT_MAZES = 20
 CELL_W = 40
-TOT_R = 15
-TOT_C = 15
+TOT_R = 12
+TOT_C = 12
 LINE_W = 4
 
 #-------------------------
@@ -179,9 +181,25 @@ for page in range(TOT_MAZES):
     pygame.display.update() 
     print(page)
 
-while True:
-    pass
 
+pdfs = []
+for page in range(TOT_MAZES):
+    print(page)
+    img1 = Image.open(str(page) + ".png")
+    im_1 = img1.convert('RGB')
+    im_1.save(str(page) + ".pdf")
+    pdfs.append(str(page) + ".pdf")
+
+merger = PdfMerger()
+
+for pdf in pdfs:
+    merger.append(pdf)
+
+merger.write("result.pdf")
+merger.close()
+
+
+print('completed !...')
 
 
 '''
@@ -196,5 +214,4 @@ while running:
         # check for closing the window
         if event.type == pygame.QUIT:
             running = False
-
 '''
